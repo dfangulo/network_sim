@@ -8,12 +8,12 @@ class App:
     def run(self):
         try:
             # Ejemplo de uso
-            ip = [192, 128, 1, 1]
+            ip = [192, 168, 1, 1]
             netmask = 30
-            ip_start = [192, 128, 1, 20]
-            ip_end = [192, 130, 1, 50]
-            gateway = [192, 128, 1, 7]
-            dns1 = [192, 128, 1, 1]
+            ip_start = [192, 168, 1, 20]
+            ip_end = [192, 168, 1, 50]
+            gateway = [192, 168, 1, 7]
+            dns1 = [192, 168, 1, 1]
             dns2 = [80, 80, 81, 81]
 
             dhcp_server = DHCP(
