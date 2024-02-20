@@ -53,12 +53,3 @@ class DHCP:
         self.leased_ips[mac_address] = ip_address
         return ip_address
 
-
-if __name__ == "__main__":
-    # Ejemplo de uso
-    dhcp_server = DHCP([192, 168, 1, 0], 224, [192, 168, 1, 10], [192, 168, 1, 50])
-
-    # Simular una solicitud de IP para una nueva máquina con una dirección MAC específica
-    mac_address = MacAddress("00:11:22:33:44:55")
-    ip_address = dhcp_server.request_ip(str(mac_address))
-    print("Dirección IP asignada a la máquina con MAC", mac_address, ":", ip_address)

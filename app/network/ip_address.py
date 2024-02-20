@@ -18,11 +18,3 @@ class IPAddress:
             if not 0 <= octeto <= 254:
                 raise ValueError("La dirección IP es inválida")
 
-if __name__ == '__main__':
-    try:
-        ip = IPAddress([192, 168, 2, 254])
-        print(ip)
-        ip.ip_validate()
-        print("La dirección IP es válida.")
-    except ValueError as e:
-        print("Error:", e)
