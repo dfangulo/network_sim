@@ -1,11 +1,25 @@
 from app.network.dhcp_server import DHCP, MacAddress
+from .menu import Menu
 
 
 class App:
     def __init__(self) -> None:
-        self.run()
+        self.menu = Menu()
+        self.view()
+        # self.run()
 
-    def run(self):
+    def view(self) -> None:
+        # self.menu.main_menu()
+        while True:
+            sub_menu = self.menu.input_menu()
+            if sub_menu == "exit":
+                print("Saliendo del programa!")
+                break
+            else:
+                print(sub_menu)
+                input("Presiona Enter para continuar!")
+
+    def run(self) -> None:
         try:
             # Ejemplo de uso
             ip = [192, 168, 1, 1]
@@ -56,6 +70,3 @@ class App:
             print(dhcp_server.leased_ips)
         except ValueError as e:
             print("Error:", e)
-
-    def menu(self):
-        print("menu")
