@@ -1,9 +1,13 @@
 class Page:
-    def __init__(self, head: str, options: list, bottom: str) -> None:
+    def __init__(self, name: str, head: str, options: list, bottom: str) -> None:
+        self.name = name
         self.head = head
         self.options = options
         self.bottom = bottom
         self.large_page = 27
+
+    def __str__(self) -> str:
+        return f"{self.name}"
 
     def display(self):
         print("-" * self.large_page)
