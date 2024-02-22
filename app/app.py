@@ -6,10 +6,8 @@ class App:
     def __init__(self) -> None:
         self.menu = Menu()
         self.view()
-        # self.run()
 
     def view(self) -> None:
-        # self.menu.main_menu()
         while True:
             sub_menu = self.menu.input_menu()
             if sub_menu == "exit":
@@ -17,7 +15,9 @@ class App:
                 break
             else:
                 print(sub_menu)
+                self.menu.call_menu(option=sub_menu)
                 input("Presiona Enter para continuar!")
+
 
     def run(self) -> None:
         try:
