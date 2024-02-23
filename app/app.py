@@ -10,7 +10,7 @@ class App:
         while True:
             sub_menu = self.menu.input_menu()
             if sub_menu == "exit":
-                print("Saliendo del programa!")
+                print(f"Saliendo del {self.menu.current_page.head}")
                 break
             elif sub_menu == "return":
                 self.menu.update_page_menu(self.menu.before_page.menu_name)
