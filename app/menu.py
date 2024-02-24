@@ -1,7 +1,6 @@
 from os import system
 from .page import Page
-from .functions import add_switch
-
+from . import functions
 
 
 class Menu:
@@ -9,6 +8,7 @@ class Menu:
         self.load_pages()
         self.current_page: object = self.main_page
         self.before_page: object = None
+        self.add_switch = getattr(functions, "add_switch", None)
 
     def load_pages(self) -> None:
         self.main_page = Page(
@@ -29,9 +29,9 @@ class Menu:
             head="Nueva Red",
             options_display=[
                 "Test Network",
-                "Menu_1_add_DHCP",
-                "Menu_1_add_device",
-                "Menu_1_remove_device",
+                "Agregar servidor DHCP",
+                "Conectar Dispositivos",
+                "Desconectar Dispositivos",
             ],
             options={
                 "1": "add_switch",
@@ -44,10 +44,8 @@ class Menu:
             menu_name="sub_menu_2",
             head="Cargar Red",
             options_display=[
-                "Menu_1_add_Switch",
-                "Menu_1_add_DHCP",
-                "Menu_1_add_device",
-                "Menu_1_remove_device",
+                "Abrir Red",
+                "Borrar Red",
             ],
             options={
                 "r": "return",
@@ -57,8 +55,8 @@ class Menu:
 
     def call_menu(self, option: str) -> None:
         # Intenta obtener la función correspondiente por su nombre
-        # func = getattr(self, option, None)
-        func = getattr(option)
+        func = getattr(self, option, None)
+        # func = getattr(option)
         if func:
             func()  # Llama a la función si se encontró
         else:
