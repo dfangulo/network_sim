@@ -1,6 +1,7 @@
 import os
 import json
 from app.net_components.dhcp_server import DHCP, MacAddress
+from .network import Network
 
 
 def clear_screen():

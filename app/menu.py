@@ -7,7 +7,6 @@ class Menu:
         self.load_pages()
         self.current_page: object = self.main_page
         self.before_page: object = None
-        self.network_settings = {}
         self.add_switch = getattr(functions, "add_switch", None)
         self.clear_screen = getattr(functions, "clear_screen", None)
 
