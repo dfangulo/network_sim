@@ -1,6 +1,32 @@
-from app.network.dhcp_server import DHCP, MacAddress
+import os
+import json
+from app.net_components.dhcp_server import DHCP, MacAddress
 
-def add_switch() ->None:
+
+def clear_screen():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  # Linux, Unix o macOS
+        os.system("clear")
+    elif sistema_operativo == "nt":  # Windows
+        os.system("cls")
+    else:
+        # Si el sistema operativo no es reconocido, no se realiza ninguna acción
+        pass
+
+
+def new_network(self) -> None:
+    pass
+
+
+def load_network(self) -> None:
+    pass
+
+
+def add_dhcp() -> None:
+    pass
+
+
+def add_switch() -> None:
     try:
         # Ejemplo de uso
         ip = [192, 168, 1, 1]
