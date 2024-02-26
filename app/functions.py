@@ -24,7 +24,7 @@ def new_network() -> object:
     print("Nombre del archivo:")
     file_name = input(">:")
     if not file_name:
-        file_name= __JSON_PATH + name + '.json'
+        file_name = __JSON_PATH + name + ".json"
 
     network = Network(name=name, file_name=file_name)
     network.save_settings()
@@ -43,12 +43,12 @@ def load_network() -> None:
         # Intenta borrar el archivo
         try:
             network = Network.from_file(file_name=full_file_name)
-            print(f"El archivo '{network.get_settings()}' ha sido cargado correctamente.")
+            print(
+                f"El archivo '{network.get_settings()}' ha sido cargado correctamente."
+            )
             return network
         except OSError as e:
-            print(
-                f"Error al cargar el archivo '{full_file_name}': {e}"
-            )
+            print(f"Error al cargar el archivo '{full_file_name}': {e}")
     else:
         print(f"El archivo '{__JSON_PATH + file_name}' no existe.")
         input("Enter para volver!")
@@ -83,8 +83,26 @@ def list_files() -> None:
         print(" - ", archivo)
 
 
-def add_dhcp() -> None:
-    pass
+def add_dhcp(network:object) -> None:
+    # Ejemplo de uso
+    ip = [192, 168, 1, 1]
+    netmask = 30
+    ip_start = [192, 168, 1, 20]
+    ip_end = [192, 168, 1, 50]
+    gateway = [192, 168, 1, 7]
+    dns1 = [192, 168, 1, 1]
+    dns2 = [80, 80, 81, 81]
+    dhcp_server = DHCP(
+        network_ip=ip,
+        subnet_mask=netmask,
+        ip_range_start=ip_start,
+        ip_range_end=ip_end,
+        gateway=gateway,
+        dns1=dns1,
+        dns2=dns2,
+    )
+    network.set_settings(key='dhcp', value=dhcp_server)
+    
 
 
 def add_switch() -> None:

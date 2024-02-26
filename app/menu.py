@@ -73,14 +73,14 @@ class Menu:
             menu_name="sub_menu_1",
             head="Nueva Red",
             options_display=[
-                "info Network",
-                "-",
+                "Info Network",
+                "Agregar DHCP",
                 "-",
                 "-",
             ],
             options={
                 "1": "info_network",
-                "2": "add_switch",
+                "2": "add_dhcp",
                 "3": "add_switch",
                 "4": "add_switch",
                 "r": "return",
@@ -100,7 +100,14 @@ class Menu:
     def info_network(self):
         if self.network:
             functions.info_network(self.network)
-            print(self.network.settings.get('data'))
+            #print(self.network.settings.get('data'))
         else:
             print("no existe ninguna red cargada")
-        input('@')
+            input('@')
+    
+    def add_dhcp(self):
+        if self.network:
+            functions.add_dhcp(self.network)
+        else:
+            print("no existe ninguna red cargada")
+            input('@')
