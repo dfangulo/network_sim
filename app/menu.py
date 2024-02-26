@@ -5,10 +5,10 @@ from . import functions
 class Menu:
     def __init__(self) -> None:
         self.load_pages()
+        self.load_functions()
         self.current_page: object = self.main_page
         self.before_page: object = None
-        self.add_switch = getattr(functions, "add_switch", None)
-        self.clear_screen = getattr(functions, "clear_screen", None)
+        self.network: object = None
 
     def input_menu(self) -> str:
         while True:
@@ -29,15 +29,19 @@ class Menu:
                     )
                     for key in self.current_page.options:
                         keys.append(key)
-                    print("\t", ", ".join(keys))
+                    print("  '", ", ".join(keys), "'")
                     input("Enter para continuar!")
 
     def call_menu(self, option: str) -> None:
         # Intenta obtener la función correspondiente por su nombre
         func = getattr(self, option, None)
-        # func = getattr(option)
         if func:
-            func()  # Llama a la función si se encontró
+            if option == "new_network" or option == "load_network":
+                self.network = func()
+                if self.network:
+                    self.update_page_menu(page_menu="network_page")
+            else:
+                func()  # Llama a la función si se encontró
         else:
             print(f"La opción '{option}' no tiene una función asociada.")
             input("Enter para continuar")
@@ -55,41 +59,48 @@ class Menu:
             func_name=None,
             menu_name="main_page",
             head="Simulador de Redes",
-            options_display=["Nueva Red", "Cargar Red"],
+            options_display=["Nueva Red", "Cargar Red", "Borrar Red"],
             options={
-                "1": "new_network_page",
-                "2": "load_network_page",
+                "1": "new_network",
+                "2": "load_network",
+                "3": "delete_network",
                 "q": "exit",
             },
             bottom="(q) Cerrar aplicación",
         )
-        self.new_network_page = Page(
+        self.network_page = Page(
             func_name=None,
             menu_name="sub_menu_1",
             head="Nueva Red",
             options_display=[
-                "Test Network",
-                "Agregar servidor DHCP",
-                "Conectar Dispositivos",
-                "Desconectar Dispositivos",
+                "info Network",
+                "-",
+                "-",
+                "-",
             ],
             options={
-                "1": "add_switch",
-                "r": "return",
-            },
-            bottom="(r) Regresar",
-        )
-        self.load_network_page = Page(
-            func_name=None,
-            menu_name="sub_menu_2",
-            head="Cargar Red",
-            options_display=[
-                "Abrir Red",
-                "Borrar Red",
-            ],
-            options={
+                "1": "info_network",
+                "2": "add_switch",
+                "3": "add_switch",
+                "4": "add_switch",
                 "r": "return",
             },
             bottom="(r) Regresar",
         )
 
+    def load_functions(self) -> None:
+        self.new_network: function = getattr(functions, "new_network", None)
+        self.load_network: function = getattr(functions, "load_network", None)
+        self.delete_network: function = getattr(functions, "delete_network", None)
+        #self.info_network: function = getattr(functions, f"info_network", None)
+        #self.info_network: function = lambda network: functions.new_network(self.network) if functions.new_network else None
+        self.add_switch: function = getattr(functions, "add_switch", None)
+        self.clear_screen: function = getattr(functions, "clear_screen", None)
+
+    def info_network(self):
+        if self.network:
+            functions.info_network(self.network)
+            print(self.network.settings.get('data'))
+        else:
+            print("no existe ninguna red cargada")
+        input('@')

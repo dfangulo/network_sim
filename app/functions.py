@@ -1,10 +1,11 @@
 import os
-import json
 from app.net_components.dhcp_server import DHCP, MacAddress
 from .network import Network
 
+__JSON_PATH = "app/files/"
 
-def clear_screen():
+
+def clear_screen() -> None:
     sistema_operativo = os.name
     if sistema_operativo == "posix":  # Linux, Unix o macOS
         os.system("clear")
@@ -15,12 +16,71 @@ def clear_screen():
         pass
 
 
-def new_network(self) -> None:
-    pass
+def new_network() -> object:
+    print("Datos Para crear una RED".center(27))
+    print("\nIngresa un nombne para la red:")
+    name = input(">:")
+
+    print("Nombre del archivo:")
+    file_name = input(">:")
+    if not file_name:
+        file_name= __JSON_PATH + name + '.json'
+
+    network = Network(name=name, file_name=file_name)
+    network.save_settings()
+    print(network.get_settings())
+    input()
+    return network
 
 
-def load_network(self) -> None:
-    pass
+def load_network() -> None:
+    # Lista todos los archivos y directorios en el directorio especificado
+    list_files()
+    file_name = input("Nombre del archivo a cargar ")
+    full_file_name = __JSON_PATH + file_name
+    # Verifica si el archivo existe antes de intentar borrarlo
+    if os.path.exists(full_file_name):
+        # Intenta borrar el archivo
+        try:
+            network = Network.from_file(file_name=full_file_name)
+            print(f"El archivo '{network.get_settings()}' ha sido cargado correctamente.")
+            return network
+        except OSError as e:
+            print(
+                f"Error al cargar el archivo '{full_file_name}': {e}"
+            )
+    else:
+        print(f"El archivo '{__JSON_PATH + file_name}' no existe.")
+        input("Enter para volver!")
+
+
+def delete_network() -> None:
+    list_files()
+    file_name = input("Nombre del archivo a borrar: ")
+    # Verifica si el archivo existe antes de intentar borrarlo
+    if os.path.exists(__JSON_PATH + file_name):
+        # Intenta borrar el archivo
+        try:
+            os.remove(__JSON_PATH + file_name)
+            print(
+                f"El archivo '{__JSON_PATH + file_name}' ha sido eliminado correctamente."
+            )
+        except OSError as e:
+            print(
+                f"Error al intentar eliminar el archivo '{__JSON_PATH + file_name}': {e}"
+            )
+    else:
+        print(f"El archivo '{__JSON_PATH + file_name}' no existe.")
+    input("Enter para volver!")
+
+
+def list_files() -> None:
+    archivos = os.listdir(__JSON_PATH)
+
+    # Imprime la lista de archivos
+    print("Archivos en el directorio:")
+    for archivo in archivos:
+        print(" - ", archivo)
 
 
 def add_dhcp() -> None:
@@ -79,3 +139,9 @@ def add_switch() -> None:
         input("Enter Para continuar!.")
     except ValueError as e:
         print("Error:", e)
+
+
+def info_network(network: object = None) -> None:
+    print("Info Network")
+    print(network.get_settings())
+    input("Enter para continuar!")
