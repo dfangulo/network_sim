@@ -32,7 +32,7 @@ class Network:
     def get_settings(self) -> dict:
         self.settings.get("data", None)
         self.settings.get("network", None)
-        return self.settings
+        return self.settings.get("network", None)
 
     @classmethod
     def from_file(cls, name: str = "temp", file_name: str = None):

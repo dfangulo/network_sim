@@ -28,8 +28,6 @@ def new_network() -> object:
 
     network = Network(name=name, file_name=file_name)
     network.save_settings()
-    print(network.get_settings())
-    input()
     return network
 
 
@@ -57,6 +55,8 @@ def load_network() -> None:
 def delete_network() -> None:
     list_files()
     file_name = input("Nombre del archivo a borrar: ")
+    if not file_name:
+        return
     # Verifica si el archivo existe antes de intentar borrarlo
     if os.path.exists(__JSON_PATH + file_name):
         # Intenta borrar el archivo
@@ -85,15 +85,16 @@ def list_files() -> None:
 
 def add_dhcp(network:object) -> None:
     # Ejemplo de uso
-    ip = [192, 168, 1, 1]
-    netmask = 30
-    ip_start = [192, 168, 1, 20]
-    ip_end = [192, 168, 1, 50]
-    gateway = [192, 168, 1, 7]
-    dns1 = [192, 168, 1, 1]
-    dns2 = [80, 80, 81, 81]
+    if network.settings.get(network).get("dhcp"):
+        ip_server = [192, 168, 1, 1]
+        netmask = 30
+        ip_start = [192, 168, 1, 20]
+        ip_end = [192, 168, 1, 50]
+        gateway = [192, 168, 1, 7]
+        dns1 = [192, 168, 1, 1]
+        dns2 = [80, 80, 81, 81]
     dhcp_server = DHCP(
-        network_ip=ip,
+        network_ip=ip_server,
         subnet_mask=netmask,
         ip_range_start=ip_start,
         ip_range_end=ip_end,
@@ -101,7 +102,16 @@ def add_dhcp(network:object) -> None:
         dns1=dns1,
         dns2=dns2,
     )
-    network.set_settings(key='dhcp', value=dhcp_server)
+    json_str = {
+        "ip_server" : ip_server,
+        "netmask" : netmask,
+        "ip_start" : ip_start,
+        "ip_end" : ip_end,
+        "gateway" : gateway,
+        "dns1" : dns1,
+        "dns2" : dns2
+    }
+    network.set_settings(key='dhcp', value=json_str)
     
 
 

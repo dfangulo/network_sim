@@ -1,3 +1,4 @@
+import time
 from .page import Page
 from . import functions
 
@@ -59,11 +60,12 @@ class Menu:
             func_name=None,
             menu_name="main_page",
             head="Simulador de Redes",
-            options_display=["Nueva Red", "Cargar Red", "Borrar Red"],
+            options_display=["Nueva Red", "Cargar Red", "Guardar Red","Borrar Red"],
             options={
                 "1": "new_network",
                 "2": "load_network",
-                "3": "delete_network",
+                "3": "save_network",
+                "4": "delete_network",
                 "q": "exit",
             },
             bottom="(q) Cerrar aplicación",
@@ -92,8 +94,6 @@ class Menu:
         self.new_network: function = getattr(functions, "new_network", None)
         self.load_network: function = getattr(functions, "load_network", None)
         self.delete_network: function = getattr(functions, "delete_network", None)
-        #self.info_network: function = getattr(functions, f"info_network", None)
-        #self.info_network: function = lambda network: functions.new_network(self.network) if functions.new_network else None
         self.add_switch: function = getattr(functions, "add_switch", None)
         self.clear_screen: function = getattr(functions, "clear_screen", None)
 
@@ -111,3 +111,11 @@ class Menu:
         else:
             print("no existe ninguna red cargada")
             input('@')
+
+    def save_network(self):
+        try:
+            self.network.save_settings()
+            print(f"La red {self.network.name} ha sido guardada exitosamente")
+            time.sleep(1.4)
+        except Exception as e:
+            print(f"Algo sucedio, error {str(e)}")
