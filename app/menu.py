@@ -100,14 +100,16 @@ class Menu:
     def info_network(self):
         if self.network:
             functions.info_network(self.network)
-            #print(self.network.settings.get('data'))
+            print(self.network.settings.get('data'))
         else:
             print("no existe ninguna red cargada")
             input('@')
     
     def add_dhcp(self):
         if self.network:
+            input()
             functions.add_dhcp(self.network)
+            input("$: ")
         else:
             print("no existe ninguna red cargada")
             input('@')

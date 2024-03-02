@@ -29,9 +29,7 @@ class Network:
         with open(self.file_name, "w") as archivo:
             json.dump(self.settings, archivo, indent=4)
 
-    def get_settings(self) -> dict:
-        self.settings.get("data", None)
-        self.settings.get("network", None)
+    def get_network(self) -> dict:
         return self.settings.get("network", None)
 
     @classmethod

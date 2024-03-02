@@ -31,25 +31,30 @@ def new_network() -> object:
     return network
 
 
-def load_network() -> None:
+def load_network() -> Network:
     # Lista todos los archivos y directorios en el directorio especificado
     list_files()
-    file_name = input("Nombre del archivo a cargar ")
-    full_file_name = __JSON_PATH + file_name
-    # Verifica si el archivo existe antes de intentar borrarlo
+    file_name = input("Nombre del archivo a cargar: ")
+
+    if not file_name.endswith(".json"):
+        file_name += ".json"
+
+    full_file_name = os.path.join(__JSON_PATH, file_name)
+
+    # Verifica si el archivo existe antes de intentar cargarlo
     if os.path.exists(full_file_name):
-        # Intenta borrar el archivo
         try:
             network = Network.from_file(file_name=full_file_name)
-            print(
-                f"El archivo '{network.get_settings()}' ha sido cargado correctamente."
-            )
+            print(f"El archivo '{network.get_network()}' ha sido cargado correctamente.")
             return network
-        except OSError as e:
+        except FileNotFoundError as e:
+            print(f"Error: Archivo no encontrado - {e}")
+        except Exception as e:
             print(f"Error al cargar el archivo '{full_file_name}': {e}")
     else:
-        print(f"El archivo '{__JSON_PATH + file_name}' no existe.")
-        input("Enter para volver!")
+        print(f"El archivo '{file_name}' no existe en '{__JSON_PATH}'.")
+
+    input("Presiona Enter para volver.")
 
 
 def delete_network() -> None:
@@ -83,9 +88,13 @@ def list_files() -> None:
         print(" - ", archivo)
 
 
-def add_dhcp(network:object) -> None:
+def add_dhcp(network: object) -> None:
     # Ejemplo de uso
     if network.settings.get(network).get("dhcp"):
+        # Cargar al info para instanciar el DHCP
+        pass
+    else:
+        # Solicitar los datos; ejemplo practico, no se solicitan todavia
         ip_server = [192, 168, 1, 1]
         netmask = 30
         ip_start = [192, 168, 1, 20]
@@ -93,6 +102,7 @@ def add_dhcp(network:object) -> None:
         gateway = [192, 168, 1, 7]
         dns1 = [192, 168, 1, 1]
         dns2 = [80, 80, 81, 81]
+    # crear la instancia
     dhcp_server = DHCP(
         network_ip=ip_server,
         subnet_mask=netmask,
@@ -103,16 +113,17 @@ def add_dhcp(network:object) -> None:
         dns2=dns2,
     )
     json_str = {
-        "ip_server" : ip_server,
-        "netmask" : netmask,
-        "ip_start" : ip_start,
-        "ip_end" : ip_end,
-        "gateway" : gateway,
-        "dns1" : dns1,
-        "dns2" : dns2
+        "ip_server": ip_server,
+        "netmask": netmask,
+        "ip_start": ip_start,
+        "ip_end": ip_end,
+        "gateway": gateway,
+        "dns1": dns1,
+        "dns2": dns2,
     }
-    network.set_settings(key='dhcp', value=json_str)
-    
+    network.set_settings(key="dhcp", value=json_str)
+    network.save_settings()
+    input("Enter para continuar")
 
 
 def add_switch() -> None:
@@ -171,5 +182,5 @@ def add_switch() -> None:
 
 def info_network(network: object = None) -> None:
     print("Info Network")
-    print(network.get_settings())
+    print(network.get_network())
     input("Enter para continuar!")
