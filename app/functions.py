@@ -81,20 +81,28 @@ def delete_network() -> None:
 
 def list_files() -> None:
     archivos = os.listdir(__JSON_PATH)
-
     # Imprime la lista de archivos
     print("Archivos en el directorio:")
+    print(40 * '-')
     for archivo in archivos:
         print(" - ", archivo)
+    print(40 * '-')
 
 
 def add_dhcp(network: object) -> None:
     # Ejemplo de uso
-    if network.settings.get(network).get("dhcp"):
-        # Cargar al info para instanciar el DHCP
-        pass
+    if network.settings.get("dhcp", None):
+        settings_dhcp = network.settings.get("dhcp", None)
+        ip_server = settings_dhcp.get('ip_server')
+        netmask = settings_dhcp.get('netmask')
+        ip_start = settings_dhcp.get('ip_start')
+        ip_end = settings_dhcp.get('ip_end')
+        gateway = settings_dhcp.get('gateway')
+        dns1 = settings_dhcp.get('dns1')
+        dns2 = settings_dhcp.get('dns2')
     else:
         # Solicitar los datos; ejemplo practico, no se solicitan todavia
+        input("Dar de alta a la configuracion: ")
         ip_server = [192, 168, 1, 1]
         netmask = 30
         ip_start = [192, 168, 1, 20]
@@ -124,6 +132,7 @@ def add_dhcp(network: object) -> None:
     network.set_settings(key="dhcp", value=json_str)
     network.save_settings()
     input("Enter para continuar")
+    return dhcp_server
 
 
 def add_switch() -> None:

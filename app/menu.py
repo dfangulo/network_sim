@@ -107,7 +107,6 @@ class Menu:
     
     def add_dhcp(self):
         if self.network:
-            input()
             functions.add_dhcp(self.network)
             input("$: ")
         else:

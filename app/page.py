@@ -14,7 +14,7 @@ class Page:
         self.options = options
         self.options_display = options_display
         self.bottom = bottom
-        self.large_page = 27
+        self.large_page = 40
 
     def __str__(self) -> str:
         return f"{self.name}"
